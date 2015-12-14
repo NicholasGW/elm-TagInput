@@ -1,3 +1,5 @@
+module TagInput where
+
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
@@ -20,11 +22,20 @@ model = {
 update: Action -> Model -> Model
 update action model =
   case action of
+
     Edit string ->
        { model | text = string }
 
     Add ->
-      log "Adding" {model | tags = { id = (List.length model.tags) + 1 , text =  model.text} :: model.tags, text = ""}
+      let
+        id = (List.length model.tags) + 1
+        text = model.text
+        newTag = { id = id, text = text }
+      in
+        { model |
+            tags = newTag :: model.tags,
+            text = model.text
+        }
 
     Remove id ->
       { model | tags = List.filter (\tag -> tag.id /= id) model.tags }
